@@ -15,10 +15,3 @@ def text_to_speech(input_file, output_file, language='te', slow=False):
     # Play the generated speech
     os.system(f"start {output_file}")
 
-if __name__ == "__main__":
-    input_file_path = "C:/Users/DELL/Desktop/telugu.txt.txt"
-    output_file_path = "voice.mp3"
-    target_language = 'te'
-    slow_speed = False
-
-    text_to_speech(input_file_path, output_file_path, language=target_language, slow=slow_speed)
