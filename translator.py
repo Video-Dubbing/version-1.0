@@ -12,6 +12,7 @@ import whisper
 from bark import SAMPLE_RATE, generate_audio, preload_models
 from scipy.io.wavfile import write as write_wav
 import gc
+from tts import text_to_speech
 
 # get device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -251,17 +252,8 @@ def translate(original_audio_transcribed_path, source_languaje, target_languaje)
         gr.Textbox(value=filename, label="Original audio translated", elem_id="original_audio_translated", visible=False)
     )
 
-def tex2speech(original_audio_translated_path):
-    with open(original_audio_translated_path, "r") as f:
-        translated_text = f.read()
-
-    preload_models()
-    speech_array = generate_audio(translated_text, history_prompt="v2/es_speaker_1")
-
-    translated_audio_path = "translated_audio.wav"
-    write_wav(translated_audio_path, SAMPLE_RATE, speech_array)
-
-    return translated_audio_path
+translated_audio_path = "translated_audio.wav"
+text_to_speech(original_audio_translated_path, output_file_path, language=target_language, slow=slow_speed)
 
 def delete_translated_audio(translated_audio_path):
     subprocess.run(["rm", translated_audio_path])
@@ -327,7 +319,7 @@ with gr.Blocks() as demo:
     translate_button.click(fn=get_audio_from_video, inputs=[url_textbox, stream_page], outputs=[original_audio, original_audio_path])
     original_audio.change(fn=trascribe_audio, inputs=[original_audio_path, source_languaje], outputs=[original_audio_transcribed, original_audio_transcribed_path])
     original_audio_transcribed.change(fn=translate, inputs=[original_audio_transcribed_path, source_languaje, target_languaje], outputs=[original_audio_translated, original_audio_translated_path])
-    original_audio_translated.change(fn=tex2speech, inputs=original_audio_translated_path, outputs=translated_audio)
+    original_audio_translated.change(fn=text_to_speech, inputs=original_audio_translated_path, outputs=translated_audio)
     translated_audio.change(fn=delete_translated_audio, inputs=translated_audio)
 
 
