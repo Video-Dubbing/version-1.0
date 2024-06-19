@@ -327,8 +327,8 @@ with gr.Blocks() as demo:
     translate_button.click(fn=get_audio_from_video, inputs=[url_textbox, stream_page], outputs=[original_audio, original_audio_path])
     original_audio.change(fn=trascribe_audio, inputs=[original_audio_path, source_languaje], outputs=[original_audio_transcribed, original_audio_transcribed_path])
     original_audio_transcribed.change(fn=translate, inputs=[original_audio_transcribed_path, source_languaje, target_languaje], outputs=[original_audio_translated, original_audio_translated_path])
-    # original_audio_translated.change(fn=tex2speech, inputs=original_audio_translated_path, outputs=translated_audio)
-    # translated_audio.change(fn=delete_translated_audio, inputs=translated_audio)
+    original_audio_translated.change(fn=tex2speech, inputs=original_audio_translated_path, outputs=translated_audio)
+    translated_audio.change(fn=delete_translated_audio, inputs=translated_audio)
 
 
 demo.launch(share=True)
