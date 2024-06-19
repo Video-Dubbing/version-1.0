@@ -10,8 +10,8 @@ def text_to_speech(input_file, output_file, language='te', slow=False):
 
     speech = gTTS(text=text, lang=language, slow=slow)
     speech.save(output_file)
-    print(f"Speech saved to {output_file}")
+    #print(f"Speech saved to {output_file}")
 
     # Play the generated speech
-    os.system(f"start {output_file}")
-
+    #os.system(f"start {output_file}")
+    return output_file
